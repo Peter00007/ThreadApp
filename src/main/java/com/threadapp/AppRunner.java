@@ -5,10 +5,16 @@ import java.util.concurrent.Executors;
 
 public class AppRunner {
     public static void main(String[] args) {
-        FileData getFiles = new FileData();
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        executorService.submit(getFiles);
+        int cores = Runtime.getRuntime().availableProcessors();
+
+        FileData getFiles = new FileData();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(cores);
+
+        for (int i = 0; i < getFiles.getAllFiles().size(); i++) {
+            executorService.submit(new FileReader(getFiles.getAllFiles().get(i).toString()));
+        }
         executorService.shutdown();
     }
 }
